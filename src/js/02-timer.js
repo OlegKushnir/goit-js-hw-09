@@ -46,7 +46,7 @@ function onStartTimer() {
   let deltaTime = 0;
   const selectedDate = dateTimePicker.selectedDates[0];
 
-  intervalId = setInterval(() => {
+  let intervalId = setInterval(() => {
    
     deltaTime = selectedDate - Date.now();
     if (deltaTime > 0) {
