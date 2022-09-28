@@ -13,7 +13,7 @@ const step = formData.get("step");
 const amount = formData.get("amount");
 let count = 0;
 setTimeout(()=>{
-  intervalId = setInterval((position, delay)=>{
+  let intervalId = setInterval((position, delay)=>{
   
     if (count < amount)
     {
