@@ -18,13 +18,13 @@ const options = {
     console.log(selectedDates[0]);
   },
 };
+
 startBtn.setAttribute('disabled', true);
 inputRef.addEventListener('change', onDateSelecting);
+startBtn.addEventListener('click', onStartTimer);
 
 let dateTimePicker = flatpickr('#datetime-picker', options);
 let isActive = false;
-
-startBtn.addEventListener('click', onStartTimer);
 
 function onDateSelecting() {
   const interval = dateTimePicker.selectedDates[0] - Date.now();
@@ -39,19 +39,24 @@ function onDateSelecting() {
 }
 
 function onStartTimer() {
+
   inputRef.setAttribute('disabled', true);
+  startBtn.setAttribute('disabled', true);
+
   let deltaTime = 0;
   const selectedDate = dateTimePicker.selectedDates[0];
+
   intervalId = setInterval(() => {
+   
     deltaTime = selectedDate - Date.now();
     if (deltaTime > 0) {
-      console.log(convertMs(deltaTime));
       updateTimer(convertMs(deltaTime));
-      return (isActive = true);
+      return isActive = true;
     }
     clearInterval(intervalId);
+    Notify.success('Тimer is over!');
   }, 1000);
-  startBtn.setAttribute('disabled', true);
+  
 }
 
 function updateTimer({ days, hours, minutes, seconds }) {
