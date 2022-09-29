@@ -17,7 +17,7 @@ let position = 1;
 setTimeout(()=>{
 
 
-  createPromise(position, delay)
+  createPromise(position, delay) //First promise
       .then(({ position, delay }) => {
         console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
         Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
