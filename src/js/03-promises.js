@@ -8,16 +8,34 @@ btnRef.addEventListener('click', onCreatePromise);
 function onCreatePromise(evt) {
 evt.preventDefault();
 const formData = new FormData(formRef);
-const delay = formData.get("delay");
-const step = formData.get("step");
-const amount = formData.get("amount");
-let count = 0;
+let delay = Number(formData.get("delay"));
+const step = Number(formData.get("step"));
+const amount = Number(formData.get("amount"));
+let position = 1;
+
+
 setTimeout(()=>{
-  let intervalId = setInterval((position, delay)=>{
+
+
+  createPromise(position, delay)
+      .then(({ position, delay }) => {
+        console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+      })
+      .catch(({ position, delay }) => {
   
-    if (count < amount)
+        console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+        Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+      })
+      delay += step;
+
+
+  let intervalId = setInterval(()=>{
+
+    if (position < amount)
     {
-      count += 1;
+      position += 1;
+      
       createPromise(position, delay)
       .then(({ position, delay }) => {
         console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
@@ -28,6 +46,7 @@ setTimeout(()=>{
         console.log(`❌ Rejected promise ${position} in ${delay}ms`);
         Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
       })
+      delay += step;
       return;
     }
     clearInterval(intervalId);
@@ -46,6 +65,7 @@ function createPromise(position, delay) {
     if (shouldResolve) {
       resolve({position, delay});
       // Fulfill
+      
     } else {
       reject({position, delay});
       // Reject
